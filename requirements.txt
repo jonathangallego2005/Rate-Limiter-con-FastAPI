@@ -1,0 +1,8 @@
+# FastAPI es el framework para crear nuestra API web
+fastapi==0.104.1
+# Uvicorn es el servidor ASGI que ejecuta FastAPI
+uvicorn[standard]==0.24.0
+# redis es la libreria cliente para conectarnos a Redis
+redis==5.0.1
+# python-multipart permite manejar formularios y archivos
+python-multipart==0.0.6

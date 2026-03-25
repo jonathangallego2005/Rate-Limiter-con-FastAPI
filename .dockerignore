@@ -1,0 +1,35 @@
+# Ignore unnecessary files in Docker build
+# Ignorar cache de Python para no subir basura al build
+__pycache__/
+# Ignorar historial de git en el contexto de build
+.git/
+# Ignorar reglas de git locales
+.gitignore
+# Ignorar cache de pytest
+.pytest_cache/
+# Ignorar entorno virtual local
+.venv/
+# Ignorar otro nombre comun de entorno virtual
+venv/
+# Ignorar bytecode compilado de Python
+*.pyc
+# Ignorar optimizados compilados de Python
+*.pyo
+# Ignorar metadata generada por paquetes Python
+*.egg-info/
+# Ignorar carpeta de distribucion
+dist/
+# Ignorar carpeta de build
+build/
+# Ignorar archivo oculto de macOS
+.DS_Store
+# Ignorar compose en contexto de build de la imagen
+docker-compose.yml
+# Ignorar Dockerfile dentro del contexto copiado
+Dockerfile
+# Ignorar este mismo archivo dentro del contexto
+.dockerignore
+# Ignorar README en contexto de build
+README.md
+# Ignorar archivo placeholder de git
+.gitkeep

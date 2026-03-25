@@ -1,0 +1,54 @@
+services:
+  # Servicio de Redis
+  redis:
+    # Usa imagen oficial ligera de Redis 7
+    image: redis:7-alpine
+    # Nombre fijo para identificar el contenedor facilmente
+    container_name: rate-limiter-redis
+    # Publica el puerto de Redis al host
+    ports:
+      - "6379:6379"
+    # Revisa salud de Redis para esperar antes de iniciar app
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    # Conecta este servicio a la red interna del proyecto
+    networks:
+      - rate-limiter-network
+    # Reinicia salvo que se detenga manualmente
+    restart: unless-stopped
+
+  # Servicio de la aplicación FastAPI
+  fastapi:
+    # Construye la imagen usando Dockerfile local
+    build: .
+    # Nombre fijo del contenedor de la API
+    container_name: rate-limiter-app
+    # Publica API en localhost:8000
+    ports:
+      - "8000:8000"
+    # Espera a que Redis este saludable
+    depends_on:
+      redis:
+        condition: service_healthy
+    # Variables de entorno para configurar conexion Redis
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    # Conecta FastAPI a la misma red de Redis
+    networks:
+      - rate-limiter-network
+    # Monta el codigo local para desarrollo en vivo
+    volumes:
+      - .:/app  # Para desarrollo, permite cambios en vivo
+    # Reinicia salvo que se detenga manualmente
+    restart: unless-stopped
+
+# Define redes del proyecto
+networks:
+  # Red dedicada para comunicacion interna entre contenedores
+  rate-limiter-network:
+    # Driver bridge para red local de Docker
+    driver: bridge
